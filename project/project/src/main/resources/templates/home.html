@@ -1,0 +1,78 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+<title>GamesCorner</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css"
+	th:href="@{/css/bootstrap.min.css}" />
+<style type="text/css">
+div {
+	font-size: 2rem;
+}
+
+table {
+	margin-top: 0;
+	border-collapse: collapse;
+}
+
+th, td {
+	padding: 8px;
+	text-align: left;
+	border-bottom: 1px solid #ddd;
+}
+</style>
+</head>
+
+<!-- This is the home page where the user starts after login 
+	 it shows all the games currently in the system -->
+<body>
+	<h1 sec:authorize="isAuthenticated()"
+		th:text="${#strings.concat('Welcome, ', #authentication.name)} + ' to GamesCorner'">Games
+		corner</h1>
+		
+		
+	<h1 sec:authorize="isAnonymous()">Welcome to Games corner</h1>
+
+	<h2 sec:authorize="isAnonymous()">Sign in to add your games</h2>
+		
+	
+	
+	<form th:action="@{/login}" method="post">
+		<div>
+			<input sec:authorize="isAnonymous()" type="submit" value="Sign In"
+				class="btn btn-primary" />
+		</div>
+	</form>
+	<form th:action="@{/gamelist}" method="get">
+		<div>
+			<input sec:authorize="isAuthenticated()" type="submit"
+				value="To the reviews" class="btn btn-primary" />
+		</div>
+	</form>
+	<br>
+	<br>
+	<p>Here are the available games to review. You can add more from the Reviews page!</p>
+	
+	
+	<h3>Games</h3>
+	<br>
+	<table>
+		<tr>
+			<th>Title</th>
+			<th>Studio</th>
+			<th>Category</th>
+		</tr>
+		<tr class="table table-striped" th:each="game: ${games}">
+
+			<td th:text="${game.title}" />
+			<td th:text="${game.studio}" />
+			<td th:text="${game.category.name}" />
+
+		
+			
+		</tr>
+	</table>
+
+</body>
+</html>

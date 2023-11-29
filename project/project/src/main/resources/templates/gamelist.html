@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+<title>GamesCorner</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css"
+	th:href="@{/css/bootstrap.min.css}" />
+<style type="text/css">
+div {
+	font-size: 2rem;
+}
+th {
+padding: 10px;}
+</style>
+</head>
+
+<!-- This page is for showing all the reviews users have submitted -->
+<body>
+	<h1>GamesCorner</h1>
+
+	<div>
+		<h2 th:if="${reviews.size() < 1}">
+			Add a review to show it here
+		</h2>
+		
+		<h3>If your game is not in the list, press "Add a new game"</h3>
+	</div>
+	<table th:if="${reviews.size() > 0}">
+		<tr>
+			<th scope="col">Title</th>
+			<th scope="col">Studio</th>
+			<th scope="col">Category</th>
+			<th scope="col">User</th>
+			<th scope="col">Rating</th>
+			<th scope="col">Comment</th>
+			<th scope="col">Hours played</th>
+		</tr>
+		<tr class="table table-bordered" th:each="review: ${reviews}">
+			
+			<td th:text="${review.game.title}" />
+			<td th:text="${review.game.studio}" />
+			<td th:text="${review.game?.category?.name}" />
+			<td th:text="${review.user.username}" />
+			<td th:text="${review.rating}" />
+			<td th:text="${review.comment}" />
+			<td th:text="${review.hours}" />
+
+			<td sec:authorize="hasAuthority('ADMIN')"><a
+				class="btn btn-danger"
+				th:href="@{/delete/{id}(id=${review.reviewId})}">Delete</a></td>
+			<td th:if="${#authentication.principal.username eq review.user.username}"><a class="btn btn-primary"
+				th:href="@{/editreview/{id}(id=${review.game.id})}">Edit</a></td>
+		</tr>
+	</table>
+	<br>
+	<a href="/addgame" class="btn btn-success">Add a new game</a>
+	<a href="/addreview" class="btn btn-success">Add a review</a>
+	<br>
+	<br>
+	<form th:action="@{/home}" method="get">
+		<input type="submit" value="Home page" class="btn btn-primary" />
+	</form>
+	<br>
+	<form th:action="@{/logout}" method="post">
+		<input type="submit" value="Sign Out" class="btn btn-danger" />
+	</form>
+</body>
+</html>

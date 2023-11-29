@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+<title>GamesCorner</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css"
+	th:href="@{/css/bootstrap.min.css}" />
+<style type="text/css">
+div {
+	font-size: 2rem;
+}
+</style>
+</head>
+<!-- This is teh login page for existing users and it has a link for new users to sign up -->
+<body>
+	
+		<div class="alert alert-danger" th:if="${param.error}">Invalid
+			username and password.</div>
+		<div class="alert alert-warning" th:if="${param.logout}">You
+			have been logged out.</div>
+		<form th:action="@{/login}" method="post">
+			<div>
+				<label> User Name : <input type="text" name="username"
+					class="form-control" />
+				</label>
+			</div>
+			<div>
+				<label> Password: <input type="password" name="password"
+					class="form-control" />
+				</label>
+			</div>
+			<div style="clear: both; display: block; height: 10px;"></div>
+				<input type="submit" value="Sign In" class="btn btn-danger" />
+			
+			
+		</form>
+		
+		<form th:action="@{/registration}" method="get">
+		<div>
+			<input sec:authorize="isAnonymous()" type="submit" value="Sign-up"
+				class="btn btn-primary" />
+		</div>
+	</form>
+</body>
+</html>
